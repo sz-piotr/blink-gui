@@ -1,20 +1,9 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "target": "ESNext",
     "module": "CommonJS",
     "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "isolatedModules": true,
-
-    "strict": true,
-    "noImplicitOverride": true,
-    "noUncheckedIndexedAccess": true,
-
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
-
+    "verbatimModuleSyntax": false,
     "outDir": "dist/cjs"
   }
 }
