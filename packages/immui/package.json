@@ -1,0 +1,26 @@
+{
+  "name": "immui",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": false,
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "pnpm run build:esm && pnpm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc -p tsconfig.cjs.json && cp cjs-package.json dist/cjs/package.json",
+    "check": "biome check .",
+    "check:fix": "biome check --apply ."
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

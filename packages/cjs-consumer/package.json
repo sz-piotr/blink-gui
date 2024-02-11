@@ -1,0 +1,11 @@
+{
+  "name": "cjs-consumer",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "immui": "workspace:^"
+  }
+}
