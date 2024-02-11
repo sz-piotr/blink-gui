@@ -1,25 +1,33 @@
-import type { Widget } from "./Widget.js";
-
-export interface Context {
-  getNode: () => Widget | undefined;
-  replaceNode: (node: Widget) => void;
+export interface Widget {
+  type: string;
+  element: HTMLElement;
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: necessary
-export function defineWidget<N extends Widget, A extends any[], R>(
-  type: N["type"],
+export interface Context {
+  getNextWidget: () => Widget | undefined;
+  replaceWidget: (node: Widget) => void;
+}
+
+export function defineWidget<
+  T extends string,
+  N extends { type: T; element: HTMLElement },
+  // biome-ignore lint/suspicious/noExplicitAny: necessary
+  A extends any[],
+  R,
+>(
+  type: T,
   context: Context,
   create: (...args: A) => N,
   diff: (node: N, ...args: A) => R,
 ): (...args: A) => R {
   return (...args: A) => {
-    const node = context.getNode();
+    const node = context.getNextWidget();
     if (node?.type === type) {
       return diff(node as N, ...args);
     }
 
     const newNode = create(...args);
-    context.replaceNode(newNode);
+    context.replaceWidget(newNode);
     return diff(newNode, ...args);
   };
 }

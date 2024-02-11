@@ -2,16 +2,17 @@ import { Immui } from "immui";
 
 const ui = new Immui();
 
-let visible = false;
+let count = 0;
+const config = {
+  doublePower: false,
+};
 
 function renderUi() {
-  if (ui.button(!visible ? "Show" : "Hide")) {
-    visible = !visible;
-  }
-  if (visible) {
-    ui.container((ui) => {
-      ui.label("Hello, world!");
-    });
+  ui.label(`Click count: ${count}`);
+  ui.control(config, "doublePower");
+
+  if (ui.button("Increment")) {
+    count += config.doublePower ? 2 : 1;
   }
 
   ui.end();

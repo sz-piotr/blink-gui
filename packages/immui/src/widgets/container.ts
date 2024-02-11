@@ -1,13 +1,18 @@
-import type { ContainerNode } from "../Widget.js";
+import { Immui } from "../Immui.js";
 import type { Context } from "../defineWidget.js";
 import { defineWidget } from "../defineWidget.js";
-import { Immui } from "../index.js";
+
+interface ContainerWidget {
+  type: "container";
+  element: HTMLElement;
+  ui: Immui;
+}
 
 export function defineContainer(context: Context) {
   return defineWidget("container", context, createContainer, diffContainer);
 }
 
-function createContainer(contents: (ui: Immui) => void): ContainerNode {
+function createContainer(contents: (ui: Immui) => void): ContainerWidget {
   const element = document.createElement("div");
   const ui = new Immui({ container: element, autoEnd: false });
   contents(ui);
@@ -16,7 +21,7 @@ function createContainer(contents: (ui: Immui) => void): ContainerNode {
 }
 
 function diffContainer(
-  node: ContainerNode,
+  node: ContainerWidget,
   contents: (ui: Immui) => void,
 ): void {
   contents(node.ui);
