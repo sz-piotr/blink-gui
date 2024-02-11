@@ -6,6 +6,6 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "immui": "workspace:^"
+    "immui": "workspace:*"
   }
 }

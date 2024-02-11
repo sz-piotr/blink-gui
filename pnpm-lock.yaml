@@ -15,17 +15,20 @@ importers:
   packages/cjs-consumer:
     dependencies:
       immui:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../immui
 
   packages/esm-consumer:
     dependencies:
       immui:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../immui
 
   packages/example:
     devDependencies:
+      immui:
+        specifier: workspace:*
+        version: link:../immui
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
