@@ -16,6 +16,7 @@
     "declaration": true,
     "declarationMap": true,
 
-    "outDir": "dist/esm"
-  }
+    "outDir": "dist/esm",
+  },
+  "exclude": ["dist"]
 }

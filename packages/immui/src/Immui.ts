@@ -2,7 +2,8 @@ import type { Context, Widget } from "./defineWidget.js";
 import { defineButton } from "./widgets/button.js";
 import { defineCheckbox } from "./widgets/checkbox.js";
 import { defineContainer } from "./widgets/container.js";
-import { defineLabel } from "./widgets/label.js";
+import { defineText } from "./widgets/text.js";
+import { defineTextbox } from "./widgets/textbox.js";
 
 export interface ImmuiOptions {
   container?: HTMLElement;
@@ -26,17 +27,25 @@ export class Immui {
     this.autoEnd = options?.autoEnd ?? true;
   }
 
-  label = defineLabel(this.context);
+  text = defineText(this.context);
   button = defineButton(this.context);
   checkbox = defineCheckbox(this.context);
+  textbox = defineTextbox(this.context);
   container = defineContainer(this.context);
 
-  control<T>(object: T, key: keyof T & string): void {
+  control<K extends string>(
+    object: { [_ in K]: boolean | string },
+    key: K,
+  ): void {
     const value = object[key];
     if (typeof value === "boolean") {
       const newValue = this.checkbox(key, { value });
       if (newValue !== value) {
-        // @ts-expect-error - We know this is a boolean
+        object[key] = newValue;
+      }
+    } else if (typeof value === "string") {
+      const newValue = this.textbox(key, { value });
+      if (newValue !== value) {
         object[key] = newValue;
       }
     } else {

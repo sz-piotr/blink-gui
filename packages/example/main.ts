@@ -5,15 +5,20 @@ const ui = new Immui();
 let count = 0;
 const config = {
   doublePower: false,
+  label: "Hello, world!",
 };
 
 function renderUi() {
-  ui.label(`Click count: ${count}`);
+  ui.text(`Click count: ${count}`);
+
   ui.control(config, "doublePower");
+  ui.control(config, "label");
 
   if (ui.button("Increment")) {
     count += config.doublePower ? 2 : 1;
   }
+
+  ui.text(`Character count: ${config.label.length}`);
 
   ui.end();
 }

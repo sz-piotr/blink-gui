@@ -13,10 +13,13 @@ export function defineButton(context: Context) {
 }
 
 function createButton(text: string): ButtonWidget {
-  const element = document.createElement("button");
-  element.textContent = text;
+  const element = document.createElement("div");
+  const button = document.createElement("button");
+  button.textContent = text;
+  element.appendChild(button);
+
   const node: ButtonWidget = { type: "button", text, clicked: false, element };
-  element.addEventListener("click", () => {
+  button.addEventListener("click", () => {
     node.clicked = true;
   });
   return node;

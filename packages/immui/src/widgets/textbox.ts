@@ -1,30 +1,27 @@
 import type { Context } from "../defineWidget.js";
 import { defineWidget } from "../defineWidget.js";
 
-interface CheckboxWidget {
-  type: "checkbox";
+interface TextboxWidget {
+  type: "textbox";
   element: HTMLElement;
   input: HTMLInputElement;
   label: HTMLSpanElement;
   text: string;
-  value: boolean;
+  value: string;
   updated: boolean;
 }
 
-export interface CheckboxOptions {
-  value?: boolean;
-  initialValue?: boolean;
+export interface TextboxOptions {
+  value?: string;
+  initialValue?: string;
 }
 
-export function defineCheckbox(context: Context) {
-  return defineWidget("checkbox", context, createCheckbox, diffCheckbox);
+export function defineTextbox(context: Context) {
+  return defineWidget("textbox", context, createTextbox, diffTextbox);
 }
 
-function createCheckbox(
-  text: string,
-  options?: CheckboxOptions,
-): CheckboxWidget {
-  const value = options?.initialValue ?? options?.value ?? false;
+function createTextbox(text: string, options?: TextboxOptions): TextboxWidget {
+  const value = options?.initialValue ?? options?.value ?? "";
   const element = document.createElement("label");
   element.style.display = "block";
 
@@ -33,12 +30,11 @@ function createCheckbox(
   element.appendChild(label);
 
   const input = document.createElement("input");
-  input.type = "checkbox";
-  input.checked = value;
+  input.value = value;
   element.appendChild(input);
 
-  const node: CheckboxWidget = {
-    type: "checkbox",
+  const node: TextboxWidget = {
+    type: "textbox",
     element,
     input,
     label,
@@ -46,18 +42,18 @@ function createCheckbox(
     value,
     updated: false,
   };
-  input.addEventListener("change", () => {
-    node.value = input.checked;
+  input.addEventListener("input", () => {
+    node.value = input.value;
     node.updated = true;
   });
   return node;
 }
 
-function diffCheckbox(
-  node: CheckboxWidget,
+function diffTextbox(
+  node: TextboxWidget,
   text: string,
-  options?: CheckboxOptions,
-): boolean {
+  options?: TextboxOptions,
+): string {
   if (node.text !== text) {
     node.text = text;
     node.label.textContent = text;
@@ -68,7 +64,7 @@ function diffCheckbox(
     options.value !== node.value
   ) {
     node.value = options.value;
-    node.input.checked = options.value;
+    node.input.value = options.value;
   }
   node.updated = false;
   return node.value;
