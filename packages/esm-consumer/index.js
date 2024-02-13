@@ -1,3 +1,3 @@
-import * as IMMUI from "immui";
+import * as IMPORT from "blink-gui";
 
-console.log(IMMUI);
+console.log(IMPORT);

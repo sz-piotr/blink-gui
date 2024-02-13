@@ -12,35 +12,35 @@ importers:
         specifier: ^1.5.3
         version: 1.5.3
 
+  packages/blink-gui:
+    devDependencies:
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
   packages/cjs-consumer:
     dependencies:
-      immui:
+      blink-gui:
         specifier: workspace:*
-        version: link:../immui
+        version: link:../blink-gui
 
   packages/esm-consumer:
     dependencies:
-      immui:
+      blink-gui:
         specifier: workspace:*
-        version: link:../immui
+        version: link:../blink-gui
 
   packages/example:
     devDependencies:
-      immui:
+      blink-gui:
         specifier: workspace:*
-        version: link:../immui
+        version: link:../blink-gui
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
       vite:
         specifier: ^5.1.1
         version: 5.1.1
-
-  packages/immui:
-    devDependencies:
-      typescript:
-        specifier: ^5.3.3
-        version: 5.3.3
 
 packages:
 

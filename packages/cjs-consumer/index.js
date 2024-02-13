@@ -1,3 +1,3 @@
-const IMMUI = require("immui");
+const IMPORT = require("blink-gui");
 
-console.log(IMMUI);
+console.log(IMPORT);

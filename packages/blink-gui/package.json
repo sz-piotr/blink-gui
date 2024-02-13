@@ -1,5 +1,5 @@
 {
-  "name": "immui",
+  "name": "blink-gui",
   "description": "Immediate mode ui in browser for developers",
   "keywords": [
     "immediate",
@@ -11,10 +11,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sz-piotr/immui.git"
+    "url": "git+https://github.com/sz-piotr/blink-gui.git"
   },
   "bugs": {
-    "url": "https://github.com/sz-piotr/immui/issues"
+    "url": "https://github.com/sz-piotr/blink-gui/issues"
   },
   "author": "Piotr Szlachciak <szlachciak.piotr@gmail.com>",
   "license": "MIT",

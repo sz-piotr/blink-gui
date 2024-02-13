@@ -1,6 +1,6 @@
-import { Immui } from "immui";
+import { BlinkGui } from "blink-gui";
 
-const ui = new Immui();
+const ui = new BlinkGui();
 
 let count = 0;
 const config = {

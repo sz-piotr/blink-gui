@@ -10,7 +10,7 @@ export interface ImmuiOptions {
   autoEnd?: boolean;
 }
 
-export class Immui {
+export class BlinkGui {
   private element: HTMLElement;
   private nodes: Widget[] = [];
   private index = 0;
