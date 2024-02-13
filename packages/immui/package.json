@@ -1,8 +1,25 @@
 {
   "name": "immui",
+  "description": "Immediate mode ui in browser for developers",
+  "keywords": [
+    "immediate",
+    "mode",
+    "ui",
+    "library",
+    "development",
+    "tool"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sz-piotr/immui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sz-piotr/immui/issues"
+  },
+  "author": "Piotr Szlachciak <szlachciak.piotr@gmail.com>",
+  "license": "MIT",
   "version": "0.1.0",
   "type": "module",
-  "license": "MIT",
   "sideEffects": false,
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -12,6 +29,11 @@
       "require": "./dist/cjs/index.js"
     }
   },
+  "files": [
+    "dist/cjs",
+    "dist/esm",
+    "src"
+  ],
   "scripts": {
     "clean": "rm -rf dist",
     "build": "pnpm run build:esm && pnpm run build:cjs",
