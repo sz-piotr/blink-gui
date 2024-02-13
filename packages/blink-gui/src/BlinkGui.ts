@@ -5,7 +5,7 @@ import { defineContainer } from "./widgets/container.js";
 import { defineText } from "./widgets/text.js";
 import { defineTextbox } from "./widgets/textbox.js";
 
-export interface ImmuiOptions {
+export interface BlinkGuiOptions {
   container?: HTMLElement;
   autoEnd?: boolean;
 }
@@ -22,7 +22,7 @@ export class BlinkGui {
     replaceWidget: this.replaceNode.bind(this),
   };
 
-  constructor(options?: ImmuiOptions) {
+  constructor(options?: BlinkGuiOptions) {
     this.element = options?.container ?? createContainerElement();
     this.autoEnd = options?.autoEnd ?? true;
   }
@@ -87,7 +87,7 @@ export class BlinkGui {
 
 function createContainerElement() {
   const container = document.createElement("div");
-  container.classList.add("immui-container");
+  container.classList.add("blink-container");
   document.body.appendChild(container);
   return container;
 }
