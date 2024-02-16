@@ -26,16 +26,31 @@ function createCheckbox(
 ): CheckboxWidget {
   const value = options?.initialValue ?? options?.value ?? false;
   const element = document.createElement("label");
-  element.style.display = "block";
+  element.className = "blnk-field";
 
   const label = document.createElement("span");
+  label.className = "blnk-label";
   label.textContent = text;
   element.appendChild(label);
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "blnk-checkbox";
+  element.appendChild(wrapper);
 
   const input = document.createElement("input");
   input.type = "checkbox";
   input.checked = value;
-  element.appendChild(input);
+  wrapper.appendChild(input);
+
+  const xmlns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(xmlns, "svg");
+  svg.setAttributeNS(null, "viewBox", "0 0 16 16");
+  svg.setAttributeNS(null, "width", "16px");
+  svg.setAttributeNS(null, "height", "16px");
+  const path = document.createElementNS(xmlns, "path");
+  path.setAttributeNS(null, "d", "M4 8l3 3 6-6");
+  svg.appendChild(path);
+  wrapper.appendChild(svg);
 
   const node: CheckboxWidget = {
     type: "checkbox",

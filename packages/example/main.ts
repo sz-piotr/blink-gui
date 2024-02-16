@@ -14,6 +14,9 @@ function renderUi() {
   ui.control(config, "doublePower");
   ui.control(config, "label");
 
+  ui.textbox("Main text");
+  ui.textbox("NPC 2 Name");
+
   if (ui.button("Increment")) {
     count += config.doublePower ? 2 : 1;
   }

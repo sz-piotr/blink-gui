@@ -23,13 +23,15 @@ export function defineTextbox(context: Context) {
 function createTextbox(text: string, options?: TextboxOptions): TextboxWidget {
   const value = options?.initialValue ?? options?.value ?? "";
   const element = document.createElement("label");
-  element.style.display = "block";
+  element.className = "blnk-field";
 
   const label = document.createElement("span");
+  label.className = "blnk-label";
   label.textContent = text;
   element.appendChild(label);
 
   const input = document.createElement("input");
+  input.className = "blnk-textbox";
   input.value = value;
   element.appendChild(input);
 
