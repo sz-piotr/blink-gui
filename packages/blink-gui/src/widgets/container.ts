@@ -14,7 +14,11 @@ export function defineContainer(context: Context) {
 
 function createContainer(contents: (ui: BlinkGui) => void): ContainerWidget {
   const element = document.createElement("div");
-  const ui = new BlinkGui({ container: element, autoEnd: false });
+  const ui = new BlinkGui({
+    container: element,
+    autoEnd: false,
+    skipInjectingStyles: true,
+  });
   contents(ui);
   ui.end();
   return { type: "container", element, ui };

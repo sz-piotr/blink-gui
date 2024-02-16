@@ -1,4 +1,5 @@
 import type { Context, Widget } from "./defineWidget.js";
+import { injectStyles } from "./injectStyles.js";
 import { defineButton } from "./widgets/button.js";
 import { defineCheckbox } from "./widgets/checkbox.js";
 import { defineContainer } from "./widgets/container.js";
@@ -8,6 +9,7 @@ import { defineTextbox } from "./widgets/textbox.js";
 export interface BlinkGuiOptions {
   container?: HTMLElement;
   autoEnd?: boolean;
+  skipInjectingStyles?: boolean;
 }
 
 export class BlinkGui {
@@ -25,6 +27,9 @@ export class BlinkGui {
   constructor(options?: BlinkGuiOptions) {
     this.element = options?.container ?? createContainerElement();
     this.autoEnd = options?.autoEnd ?? true;
+    if (!options?.skipInjectingStyles) {
+      injectStyles();
+    }
   }
 
   text = defineText(this.context);
@@ -35,7 +40,7 @@ export class BlinkGui {
 
   control<K extends string>(
     object: { [_ in K]: boolean | string },
-    key: K
+    key: K,
   ): void {
     const value = object[key];
     if (typeof value === "boolean") {
@@ -87,7 +92,7 @@ export class BlinkGui {
 
 function createContainerElement() {
   const container = document.createElement("div");
-  container.classList.add("blink-container");
+  container.classList.add("blnk");
   document.body.appendChild(container);
   return container;
 }
