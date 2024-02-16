@@ -36,13 +36,15 @@
   ],
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "pnpm run build:esm && pnpm run build:cjs",
+    "build": "pnpm run build:styles && pnpm run build:esm && pnpm run build:cjs",
     "build:esm": "tsc",
     "build:cjs": "tsc -p tsconfig.cjs.json && cp cjs-package.json dist/cjs/package.json",
+    "build:styles": "node scripts/buildStyles.js",
     "check": "biome check .",
     "check:fix": "biome check --apply ."
   },
   "devDependencies": {
+    "sass": "^1.71.0",
     "typescript": "^5.3.3"
   }
 }
