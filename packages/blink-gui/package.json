@@ -40,10 +40,11 @@
     "build:esm": "tsc",
     "build:cjs": "tsc -p tsconfig.cjs.json && cp cjs-package.json dist/cjs/package.json",
     "build:styles": "node scripts/buildStyles.js",
-    "check": "biome check .",
-    "check:fix": "biome check --apply ."
+    "format": "prettier --check .",
+    "format:fix": "prettier --write ."
   },
   "devDependencies": {
+    "prettier": "^3.2.5",
     "sass": "^1.71.0",
     "typescript": "^5.3.3"
   }

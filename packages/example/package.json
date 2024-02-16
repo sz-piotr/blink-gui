@@ -7,11 +7,12 @@
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "biome check .",
-    "check:fix": "biome check --apply ."
+    "format": "prettier --check .",
+    "format:fix": "prettier --write ."
   },
   "devDependencies": {
     "blink-gui": "workspace:*",
+    "prettier": "^3.2.5",
     "typescript": "^5.3.3",
     "vite": "^5.1.1"
   }

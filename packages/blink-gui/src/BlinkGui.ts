@@ -35,7 +35,7 @@ export class BlinkGui {
 
   control<K extends string>(
     object: { [_ in K]: boolean | string },
-    key: K,
+    key: K
   ): void {
     const value = object[key];
     if (typeof value === "boolean") {
