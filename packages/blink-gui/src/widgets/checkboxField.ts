@@ -1,8 +1,9 @@
 import type { Context } from "../defineWidget.js";
 import { defineWidget } from "../defineWidget.js";
+import { randomId } from "../utils/randomId.js";
 
-interface CheckboxWidget {
-  type: "checkbox";
+interface CheckboxFieldWidget {
+  type: "CheckboxField";
   element: HTMLElement;
   input: HTMLInputElement;
   label: HTMLSpanElement;
@@ -11,49 +12,58 @@ interface CheckboxWidget {
   updated: boolean;
 }
 
-export interface CheckboxOptions {
+export interface CheckboxFieldOptions {
   value?: boolean;
   initialValue?: boolean;
 }
 
-export function defineCheckbox(context: Context) {
-  return defineWidget("checkbox", context, createCheckbox, diffCheckbox);
+export function defineCheckboxField(context: Context) {
+  return defineWidget(
+    "CheckboxField",
+    context,
+    createCheckboxField,
+    diffCheckboxField,
+  );
 }
 
-function createCheckbox(
+function createCheckboxField(
   text: string,
-  options?: CheckboxOptions,
-): CheckboxWidget {
+  options?: CheckboxFieldOptions,
+): CheckboxFieldWidget {
   const value = options?.initialValue ?? options?.value ?? false;
+
+  const id = randomId();
   const element = document.createElement("label");
-  element.className = "blnk-field";
+  element.className = "BlinkField";
+  element.setAttribute("for", id);
 
   const label = document.createElement("span");
-  label.className = "blnk-label";
+  label.className = "BlinkLabel";
   label.textContent = text;
   element.appendChild(label);
 
   const wrapper = document.createElement("div");
-  wrapper.className = "blnk-checkbox";
+  wrapper.className = "BlinkCheckbox";
   element.appendChild(wrapper);
 
   const input = document.createElement("input");
+  input.id = id;
   input.type = "checkbox";
   input.checked = value;
   wrapper.appendChild(input);
 
   const xmlns = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(xmlns, "svg");
-  svg.setAttributeNS(null, "viewBox", "0 0 16 16");
-  svg.setAttributeNS(null, "width", "16px");
-  svg.setAttributeNS(null, "height", "16px");
+  svg.setAttributeNS(null, "viewBox", "0 0 20 20");
+  svg.setAttributeNS(null, "width", "20px");
+  svg.setAttributeNS(null, "height", "20px");
   const path = document.createElementNS(xmlns, "path");
-  path.setAttributeNS(null, "d", "M4 8l3 3 6-6");
+  path.setAttributeNS(null, "d", "M4 10l4 4 8-8");
   svg.appendChild(path);
   wrapper.appendChild(svg);
 
-  const node: CheckboxWidget = {
-    type: "checkbox",
+  const node: CheckboxFieldWidget = {
+    type: "CheckboxField",
     element,
     input,
     label,
@@ -68,10 +78,10 @@ function createCheckbox(
   return node;
 }
 
-function diffCheckbox(
-  node: CheckboxWidget,
+function diffCheckboxField(
+  node: CheckboxFieldWidget,
   text: string,
-  options?: CheckboxOptions,
+  options?: CheckboxFieldOptions,
 ): boolean {
   if (node.text !== text) {
     node.text = text;

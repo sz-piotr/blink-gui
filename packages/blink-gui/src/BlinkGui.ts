@@ -1,10 +1,11 @@
 import type { Context, Widget } from "./defineWidget.js";
 import { injectStyles } from "./injectStyles.js";
 import { defineButton } from "./widgets/button.js";
-import { defineCheckbox } from "./widgets/checkbox.js";
+import { defineCheckboxField } from "./widgets/checkboxField.js";
 import { defineContainer } from "./widgets/container.js";
+import { defineNumberField } from "./widgets/numberField.js";
 import { defineText } from "./widgets/text.js";
-import { defineTextbox } from "./widgets/textbox.js";
+import { defineTextField } from "./widgets/textField.js";
 
 export interface BlinkGuiOptions {
   container?: HTMLElement;
@@ -32,29 +33,63 @@ export class BlinkGui {
     }
   }
 
-  text = defineText(this.context);
-  button = defineButton(this.context);
-  checkbox = defineCheckbox(this.context);
-  textbox = defineTextbox(this.context);
   container = defineContainer(this.context);
 
+  text = defineText(this.context);
+  button = defineButton(this.context);
+
+  checkboxField = defineCheckboxField(this.context);
+  checkboxControl<K extends string>(
+    object: { [_ in K]: boolean },
+    key: K,
+  ): void {
+    const value = object[key];
+    const newValue = this.checkboxField(key, { value });
+    if (newValue !== value) {
+      object[key] = newValue;
+    }
+  }
+
+  textField = defineTextField(this.context);
+  textControl<K extends string>(object: { [_ in K]: string }, key: K): void {
+    const value = object[key];
+    const newValue = this.textField(key, { value });
+    if (newValue !== value) {
+      object[key] = newValue;
+    }
+  }
+
+  numberField = defineNumberField(this.context);
+  numberControl<K extends string>(object: { [_ in K]: number }, key: K): void {
+    const value = object[key];
+    const newValue = this.numberField(key, { value });
+    if (newValue !== value) {
+      object[key] = newValue;
+    }
+  }
+
   control<K extends string>(
-    object: { [_ in K]: boolean | string },
+    object: { [_ in K]: boolean | string | number },
     key: K,
   ): void {
     const value = object[key];
     if (typeof value === "boolean") {
-      const newValue = this.checkbox(key, { value });
-      if (newValue !== value) {
-        object[key] = newValue;
-      }
+      return this.checkboxControl(object as { [_ in K]: boolean }, key);
     } else if (typeof value === "string") {
-      const newValue = this.textbox(key, { value });
-      if (newValue !== value) {
-        object[key] = newValue;
-      }
+      return this.textControl(object as { [_ in K]: string }, key);
+    } else if (typeof value === "number") {
+      return this.numberControl(object as { [_ in K]: number }, key);
     } else {
-      throw new Error("Not implemented");
+      throw new Error("Invalid value type");
+    }
+  }
+
+  controlSet(object: {}): void {
+    for (const key in object) {
+      const type = typeof (object as Record<string, unknown>)[key];
+      if (type === "boolean" || type === "string" || type === "number") {
+        this.control(object, key as string);
+      }
     }
   }
 
@@ -92,7 +127,7 @@ export class BlinkGui {
 
 function createContainerElement() {
   const container = document.createElement("div");
-  container.classList.add("blnk");
+  container.classList.add("BlinkGui");
   document.body.appendChild(container);
   return container;
 }

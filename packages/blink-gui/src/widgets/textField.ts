@@ -1,8 +1,9 @@
 import type { Context } from "../defineWidget.js";
 import { defineWidget } from "../defineWidget.js";
+import { randomId } from "../utils/randomId.js";
 
-interface TextboxWidget {
-  type: "textbox";
+interface TextFieldWidget {
+  type: "TextField";
   element: HTMLElement;
   input: HTMLInputElement;
   label: HTMLSpanElement;
@@ -11,32 +12,39 @@ interface TextboxWidget {
   updated: boolean;
 }
 
-export interface TextboxOptions {
+export interface TextFieldOptions {
   value?: string;
   initialValue?: string;
 }
 
-export function defineTextbox(context: Context) {
-  return defineWidget("textbox", context, createTextbox, diffTextbox);
+export function defineTextField(context: Context) {
+  return defineWidget("TextField", context, createTextField, diffTextField);
 }
 
-function createTextbox(text: string, options?: TextboxOptions): TextboxWidget {
+function createTextField(
+  text: string,
+  options?: TextFieldOptions,
+): TextFieldWidget {
   const value = options?.initialValue ?? options?.value ?? "";
+
+  const id = randomId();
   const element = document.createElement("label");
-  element.className = "blnk-field";
+  element.className = "BlinkField";
+  element.setAttribute("for", id);
 
   const label = document.createElement("span");
-  label.className = "blnk-label";
+  label.className = "BlinkLabel";
   label.textContent = text;
   element.appendChild(label);
 
   const input = document.createElement("input");
-  input.className = "blnk-textbox";
+  input.id = id;
+  input.className = "BlinkTextInput";
   input.value = value;
   element.appendChild(input);
 
-  const node: TextboxWidget = {
-    type: "textbox",
+  const node: TextFieldWidget = {
+    type: "TextField",
     element,
     input,
     label,
@@ -51,10 +59,10 @@ function createTextbox(text: string, options?: TextboxOptions): TextboxWidget {
   return node;
 }
 
-function diffTextbox(
-  node: TextboxWidget,
+function diffTextField(
+  node: TextFieldWidget,
   text: string,
-  options?: TextboxOptions,
+  options?: TextFieldOptions,
 ): string {
   if (node.text !== text) {
     node.text = text;

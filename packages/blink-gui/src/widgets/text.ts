@@ -13,6 +13,7 @@ export function defineText(context: Context) {
 
 function createText(text: string): TextWidget {
   const element = document.createElement("div");
+  element.className = "BlinkText";
   element.textContent = text;
   return { type: "text", text, element };
 }

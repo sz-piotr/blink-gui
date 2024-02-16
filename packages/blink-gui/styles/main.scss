@@ -1,7 +1,7 @@
 @import "reset.scss";
 
 :root {
-  --blnk-width: 200px;
+  --blnk-width: 230px;
   --blnk-gray-3: #666666;
   --blnk-gray-2: #444444;
   --blnk-gray-1: #333333;
@@ -11,7 +11,7 @@
   --blnk-text: #fff;
 }
 
-.blnk {
+.BlinkGui {
   width: var(--blnk-width);
   background-color: var(--blnk-gray-2);
   color: var(--blnk-text);
@@ -22,25 +22,38 @@
   line-height: 20px;
 }
 
-.blnk-field {
+.BlinkField {
   display: flex;
   padding: 0 8px;
   margin-bottom: 4px;
+  line-height: 22px;
 }
 
-.blnk-label {
+.BlinkText {
+  padding: 3px 8px;
+  line-height: 16px;
+  margin-bottom: 4px;
+  text-shadow: 0px 1px 0px var(--blnk-gray-1);
+}
+
+.BlinkLabel {
   display: block;
-  width: 50%;
+  width: 85px;
+  max-width: 85px;
+  min-width: 85px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   padding-right: 8px;
   text-shadow: 0px 1px 0px var(--blnk-gray-1);
   user-select: none;
   text-align: right;
 }
 
-.blnk-textbox {
-  flex: 1;
+.BlinkTextInput,
+.BlinkNumberInput {
+  width: 100%;
   color: var(--blnk-text);
-  background-color: var(--blnk-gray-0);
   caret-color: var(--blnk-blue-1);
   padding: 0 6px;
   height: 20px;
@@ -59,8 +72,17 @@
   }
 }
 
-.blnk-checkbox {
-  width: 16px;
+.BlinkTextInput {
+  background-color: var(--blnk-gray-0);
+}
+
+.BlinkNumberInput {
+  background-color: var(--blnk-gray-3);
+  text-align: center;
+}
+
+.BlinkCheckbox {
+  width: 22px;
   position: relative;
   display: flex;
   align-items: center;
@@ -70,11 +92,14 @@
     width: 100%;
     height: 100%;
     opacity: 0;
+    margin: 0;
+    cursor: pointer;
   }
   svg {
     background-color: var(--blnk-blue-2);
     border-radius: 4px;
     box-shadow: 0px 1px 0px var(--blnk-gray-1);
+    border: 1px solid var(--blnk-gray-2);
     path {
       fill: none;
       stroke-width: 2px;
@@ -88,6 +113,6 @@
     }
   }
   input:focus-visible + svg {
-    box-shadow: 0px 0px 0px 1px var(--blnk-blue-1);
+    border-color: var(--blnk-blue-1);
   }
 }
