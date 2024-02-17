@@ -1,14 +1,15 @@
 import { createElement } from "../utils/createElement.js";
 import { createField } from "../utils/createField.js";
 import { defineWidget, type Context } from "../utils/defineWidget.js";
+import { diffLabel } from "../utils/diffLabel.js";
 
 interface TextFieldWidget {
   type: "TextField";
   element: HTMLElement;
-  input: HTMLInputElement;
   label: HTMLSpanElement;
-  text: string;
-  value: string;
+  labelText: string;
+  input: HTMLInputElement;
+  inputValue: string;
   updated: boolean;
 }
 
@@ -22,31 +23,31 @@ export function defineTextField(context: Context) {
 }
 
 function createTextField(
-  text: string,
+  label: string,
   options?: TextFieldOptions,
 ): TextFieldWidget {
-  const { id, field, label } = createField("label", text);
+  const field = createField("label", label);
 
-  const value = options?.initialValue ?? options?.value ?? "";
+  const inputValue = options?.initialValue ?? options?.value ?? "";
 
   const input = createElement("input", {
-    id,
+    id: field.id,
     className: "BlinkTextInput",
-    value,
+    value: inputValue,
   });
-  field.appendChild(input);
+  field.element.appendChild(input);
 
   const node: TextFieldWidget = {
     type: "TextField",
-    element: field,
+    element: field.element,
+    label: field.label,
+    labelText: label,
     input,
-    label,
-    text,
-    value,
+    inputValue,
     updated: false,
   };
   input.addEventListener("input", () => {
-    node.value = input.value;
+    node.inputValue = input.value;
     node.updated = true;
   });
   return node;
@@ -54,21 +55,20 @@ function createTextField(
 
 function diffTextField(
   node: TextFieldWidget,
-  text: string,
+  label: string,
   options?: TextFieldOptions,
 ): string {
-  if (node.text !== text) {
-    node.text = text;
-    node.label.textContent = text;
-  }
+  diffLabel(node, label);
+
   if (
     !node.updated &&
     options?.value !== undefined &&
-    options.value !== node.value
+    options.value !== node.inputValue
   ) {
-    node.value = options.value;
+    node.inputValue = options.value;
     node.input.value = options.value;
   }
   node.updated = false;
-  return node.value;
+
+  return node.inputValue;
 }

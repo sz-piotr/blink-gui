@@ -1,14 +1,15 @@
 import { createElement } from "../utils/createElement.js";
 import { createField } from "../utils/createField.js";
 import { defineWidget, type Context } from "../utils/defineWidget.js";
+import { diffLabel } from "../utils/diffLabel.js";
 
 interface NumberFieldWidget {
   type: "NumberField";
   element: HTMLElement;
-  input: HTMLInputElement;
   label: HTMLSpanElement;
-  text: string;
-  value: number;
+  labelText: string;
+  input: HTMLInputElement;
+  inputValue: number;
   updated: boolean;
 }
 
@@ -27,32 +28,32 @@ export function defineNumberField(context: Context) {
 }
 
 function createNumberField(
-  text: string,
+  label: string,
   options?: NumberFieldOptions,
 ): NumberFieldWidget {
-  const { id, field, label } = createField("label", text);
+  const field = createField("label", label);
 
   const value = options?.initialValue ?? options?.value ?? 0;
 
   const input = createElement("input", {
-    id,
+    id: field.id,
     className: "BlinkNumberInput",
     value: value.toString(),
   });
-  field.appendChild(input);
+  field.element.appendChild(input);
 
   const node: NumberFieldWidget = {
     type: "NumberField",
-    element: field,
+    element: field.element,
     input,
-    label,
-    text,
-    value,
+    label: field.label,
+    labelText: label,
+    inputValue: value,
     updated: false,
   };
   input.addEventListener("input", () => {
-    node.value = parseFloat(input.value) || 0;
-    input.value = node.value.toString();
+    node.inputValue = parseFloat(input.value) || 0;
+    input.value = node.inputValue.toString();
     node.updated = true;
   });
   return node;
@@ -60,21 +61,18 @@ function createNumberField(
 
 function diffNumberField(
   node: NumberFieldWidget,
-  text: string,
+  label: string,
   options?: NumberFieldOptions,
 ): number {
-  if (node.text !== text) {
-    node.text = text;
-    node.label.textContent = text;
-  }
+  diffLabel(node, label);
   if (
     !node.updated &&
     options?.value !== undefined &&
-    options.value !== node.value
+    options.value !== node.inputValue
   ) {
-    node.value = options.value;
+    node.inputValue = options.value;
     node.input.value = options.value.toString();
   }
   node.updated = false;
-  return node.value;
+  return node.inputValue;
 }

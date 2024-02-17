@@ -8,7 +8,6 @@ document.body.appendChild(stats.dom);
 const ui = new BlinkGui();
 
 let count = 0;
-let renderTime = 0;
 const config = {
   first: 1,
   second: 2,
@@ -30,6 +29,8 @@ function renderUi() {
   if (ui.button("Increment")) {
     count += config.doublePower ? 2 : 1;
   }
+
+  ui.button("Button", { label: "Labelled" });
 
   ui.text(`Character count: ${config.label.length}`);
 

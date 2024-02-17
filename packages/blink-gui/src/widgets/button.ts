@@ -1,34 +1,62 @@
 import { createElement } from "../utils/createElement.js";
+import { createField } from "../utils/createField.js";
 import { defineWidget, type Context } from "../utils/defineWidget.js";
+import { diffLabel } from "../utils/diffLabel.js";
 
 interface ButtonWidget {
   type: "button";
   element: HTMLElement;
-  text: string;
+  label: HTMLSpanElement;
+  labelText: string;
+  button: HTMLButtonElement;
+  buttonText: string;
   clicked: boolean;
+}
+
+export interface ButtonOptions {
+  label: string;
 }
 
 export function defineButton(context: Context) {
   return defineWidget("button", context, createButton, diffButton);
 }
 
-function createButton(text: string): ButtonWidget {
-  const element = createElement("div");
-  const button = createElement("button", { textContent: text });
+function createButton(text: string, options?: ButtonOptions): ButtonWidget {
+  const { element, label } = createField("div", options?.label ?? "");
+
+  const button = createElement("button", {
+    className: "BlinkButton",
+    textContent: text,
+  });
   element.appendChild(button);
 
-  const node: ButtonWidget = { type: "button", text, clicked: false, element };
+  const node: ButtonWidget = {
+    type: "button",
+    element,
+    label,
+    labelText: options?.label ?? "",
+    button,
+    buttonText: text,
+    clicked: false,
+  };
   button.addEventListener("click", () => {
     node.clicked = true;
   });
   return node;
 }
 
-function diffButton(node: ButtonWidget, text: string): boolean {
-  if (node.text !== text) {
-    node.text = text;
-    node.element.textContent = text;
+function diffButton(
+  node: ButtonWidget,
+  text: string,
+  options?: ButtonOptions,
+): boolean {
+  diffLabel(node, options?.label);
+
+  if (node.buttonText !== text) {
+    node.buttonText = text;
+    node.button.textContent = text;
   }
+
   if (node.clicked) {
     node.clicked = false;
     return true;

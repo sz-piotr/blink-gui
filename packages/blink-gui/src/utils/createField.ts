@@ -1,19 +1,23 @@
 import { createElement } from "./createElement.js";
 import { randomId } from "./randomId.js";
 
-export function createField(element: "label" | "div", text: string) {
+export function createField(tagName: "label" | "div", text?: string) {
   const id = randomId();
 
-  const field = createElement(element, {
+  const element = createElement(tagName, {
     className: "BlinkField",
-    htmlFor: element === "label" ? id : undefined,
+    htmlFor: tagName === "label" ? id : undefined,
   });
 
   const label = createElement("span", {
     className: "BlinkLabel",
     textContent: text,
   });
-  field.appendChild(label);
+  element.appendChild(label);
 
-  return { field, id, label };
+  if (!text) {
+    label.style.display = "none";
+  }
+
+  return { element, id, label };
 }

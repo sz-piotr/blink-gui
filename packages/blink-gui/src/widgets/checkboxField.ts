@@ -1,14 +1,15 @@
 import { createElement } from "../utils/createElement.js";
 import { createField } from "../utils/createField.js";
 import { defineWidget, type Context } from "../utils/defineWidget.js";
+import { diffLabel } from "../utils/diffLabel.js";
 
 interface CheckboxFieldWidget {
   type: "CheckboxField";
   element: HTMLElement;
-  input: HTMLInputElement;
   label: HTMLSpanElement;
-  text: string;
-  value: boolean;
+  labelText: string;
+  input: HTMLInputElement;
+  inputValue: boolean;
   updated: boolean;
 }
 
@@ -27,20 +28,20 @@ export function defineCheckboxField(context: Context) {
 }
 
 function createCheckboxField(
-  text: string,
+  label: string,
   options?: CheckboxFieldOptions,
 ): CheckboxFieldWidget {
-  const { id, field, label } = createField("label", text);
+  const field = createField("label", label);
 
-  const value = options?.initialValue ?? options?.value ?? false;
+  const inputValue = options?.initialValue ?? options?.value ?? false;
 
   const wrapper = createElement("div", { className: "BlinkCheckbox" });
-  field.appendChild(wrapper);
+  field.element.appendChild(wrapper);
 
   const input = createElement("input", {
-    id,
+    id: field.id,
     type: "checkbox",
-    checked: value,
+    checked: inputValue,
   });
   wrapper.appendChild(input);
 
@@ -49,15 +50,15 @@ function createCheckboxField(
 
   const node: CheckboxFieldWidget = {
     type: "CheckboxField",
-    element: field,
+    element: field.element,
     input,
-    label,
-    text,
-    value,
+    label: field.label,
+    labelText: label,
+    inputValue,
     updated: false,
   };
   input.addEventListener("change", () => {
-    node.value = input.checked;
+    node.inputValue = input.checked;
     node.updated = true;
   });
   return node;
@@ -65,23 +66,22 @@ function createCheckboxField(
 
 function diffCheckboxField(
   node: CheckboxFieldWidget,
-  text: string,
+  label: string,
   options?: CheckboxFieldOptions,
 ): boolean {
-  if (node.text !== text) {
-    node.text = text;
-    node.label.textContent = text;
-  }
+  diffLabel(node, label);
+
   if (
     !node.updated &&
     options?.value !== undefined &&
-    options.value !== node.value
+    options.value !== node.inputValue
   ) {
-    node.value = options.value;
+    node.inputValue = options.value;
     node.input.checked = options.value;
   }
   node.updated = false;
-  return node.value;
+
+  return node.inputValue;
 }
 
 function createCheckboxSvg() {
