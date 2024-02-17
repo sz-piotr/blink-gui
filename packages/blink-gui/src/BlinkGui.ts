@@ -1,5 +1,6 @@
 import type { Context, Widget } from "./defineWidget.js";
 import { injectStyles } from "./injectStyles.js";
+import { toTitleCase } from "./utils/toTitleCase.js";
 import { defineButton } from "./widgets/button.js";
 import { defineCheckboxField } from "./widgets/checkboxField.js";
 import { defineContainer } from "./widgets/container.js";
@@ -44,7 +45,7 @@ export class BlinkGui {
     key: K,
   ): void {
     const value = object[key];
-    const newValue = this.checkboxField(key, { value });
+    const newValue = this.checkboxField(toTitleCase(key), { value });
     if (newValue !== value) {
       object[key] = newValue;
     }
@@ -53,7 +54,7 @@ export class BlinkGui {
   textField = defineTextField(this.context);
   textControl<K extends string>(object: { [_ in K]: string }, key: K): void {
     const value = object[key];
-    const newValue = this.textField(key, { value });
+    const newValue = this.textField(toTitleCase(key), { value });
     if (newValue !== value) {
       object[key] = newValue;
     }
@@ -62,7 +63,7 @@ export class BlinkGui {
   numberField = defineNumberField(this.context);
   numberControl<K extends string>(object: { [_ in K]: number }, key: K): void {
     const value = object[key];
-    const newValue = this.numberField(key, { value });
+    const newValue = this.numberField(toTitleCase(key), { value });
     if (newValue !== value) {
       object[key] = newValue;
     }

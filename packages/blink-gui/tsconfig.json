@@ -16,6 +16,8 @@
     "declaration": true,
     "declarationMap": true,
 
+    "skipLibCheck": true,
+
     "outDir": "dist/esm"
   },
   "exclude": ["dist"]
