@@ -1,8 +1,14 @@
 import { BlinkGui } from "blink-gui";
+import Stats from "stats.js";
+
+const stats = new Stats();
+stats.showPanel(1);
+document.body.appendChild(stats.dom);
 
 const ui = new BlinkGui();
 
 let count = 0;
+let renderTime = 0;
 const config = {
   first: 1,
   second: 2,
@@ -16,7 +22,7 @@ const config = {
 function renderUi() {
   ui.text(`Click count: ${count}`);
   ui.text(
-    "This is an example of how longer text actually looks like. As you can see the words neatly wrap into multiple lines."
+    "This is an example of how longer text actually looks like. As you can see the words neatly wrap into multiple lines.",
   );
 
   ui.controlSet(config);
@@ -32,6 +38,8 @@ function renderUi() {
 
 requestAnimationFrame(loop);
 function loop() {
+  stats.begin();
   renderUi();
+  stats.end();
   requestAnimationFrame(loop);
 }
