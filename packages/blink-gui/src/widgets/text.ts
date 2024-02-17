@@ -1,5 +1,5 @@
-import type { Context } from "../defineWidget.js";
-import { defineWidget } from "../defineWidget.js";
+import { createElement } from "../utils/createElement.js";
+import { defineWidget, type Context } from "../utils/defineWidget.js";
 
 interface TextWidget {
   type: "text";
@@ -12,9 +12,10 @@ export function defineText(context: Context) {
 }
 
 function createText(text: string): TextWidget {
-  const element = document.createElement("div");
-  element.className = "BlinkText";
-  element.textContent = text;
+  const element = createElement("div", {
+    className: "BlinkText",
+    textContent: text,
+  });
   return { type: "text", text, element };
 }
 

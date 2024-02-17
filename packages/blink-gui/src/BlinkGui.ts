@@ -1,5 +1,5 @@
-import type { Context, Widget } from "./defineWidget.js";
 import { injectStyles } from "./injectStyles.js";
+import type { Context, Widget } from "./utils/defineWidget.js";
 import { toTitleCase } from "./utils/toTitleCase.js";
 import { defineButton } from "./widgets/button.js";
 import { defineCheckboxField } from "./widgets/checkboxField.js";

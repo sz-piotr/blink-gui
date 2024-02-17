@@ -1,6 +1,6 @@
-import type { Context } from "../defineWidget.js";
-import { defineWidget } from "../defineWidget.js";
-import { randomId } from "../utils/randomId.js";
+import { createElement } from "../utils/createElement.js";
+import { createField } from "../utils/createField.js";
+import { defineWidget, type Context } from "../utils/defineWidget.js";
 
 interface TextFieldWidget {
   type: "TextField";
@@ -25,27 +25,20 @@ function createTextField(
   text: string,
   options?: TextFieldOptions,
 ): TextFieldWidget {
+  const { id, field, label } = createField("label", text);
+
   const value = options?.initialValue ?? options?.value ?? "";
 
-  const id = randomId();
-  const element = document.createElement("label");
-  element.className = "BlinkField";
-  element.setAttribute("for", id);
-
-  const label = document.createElement("span");
-  label.className = "BlinkLabel";
-  label.textContent = text;
-  element.appendChild(label);
-
-  const input = document.createElement("input");
-  input.id = id;
-  input.className = "BlinkTextInput";
-  input.value = value;
-  element.appendChild(input);
+  const input = createElement("input", {
+    id,
+    className: "BlinkTextInput",
+    value,
+  });
+  field.appendChild(input);
 
   const node: TextFieldWidget = {
     type: "TextField",
-    element,
+    element: field,
     input,
     label,
     text,

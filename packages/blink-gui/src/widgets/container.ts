@@ -1,6 +1,6 @@
 import { BlinkGui } from "../BlinkGui.js";
-import type { Context } from "../defineWidget.js";
-import { defineWidget } from "../defineWidget.js";
+import { createElement } from "../utils/createElement.js";
+import { defineWidget, type Context } from "../utils/defineWidget.js";
 
 interface ContainerWidget {
   type: "container";
@@ -13,7 +13,7 @@ export function defineContainer(context: Context) {
 }
 
 function createContainer(contents: (ui: BlinkGui) => void): ContainerWidget {
-  const element = document.createElement("div");
+  const element = createElement("div");
   const ui = new BlinkGui({
     container: element,
     autoEnd: false,

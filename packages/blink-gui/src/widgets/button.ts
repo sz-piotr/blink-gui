@@ -1,5 +1,5 @@
-import type { Context } from "../defineWidget.js";
-import { defineWidget } from "../defineWidget.js";
+import { createElement } from "../utils/createElement.js";
+import { defineWidget, type Context } from "../utils/defineWidget.js";
 
 interface ButtonWidget {
   type: "button";
@@ -13,9 +13,8 @@ export function defineButton(context: Context) {
 }
 
 function createButton(text: string): ButtonWidget {
-  const element = document.createElement("div");
-  const button = document.createElement("button");
-  button.textContent = text;
+  const element = createElement("div");
+  const button = createElement("button", { textContent: text });
   element.appendChild(button);
 
   const node: ButtonWidget = { type: "button", text, clicked: false, element };

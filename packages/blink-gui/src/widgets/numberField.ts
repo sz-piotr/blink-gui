@@ -1,6 +1,6 @@
-import type { Context } from "../defineWidget.js";
-import { defineWidget } from "../defineWidget.js";
-import { randomId } from "../utils/randomId.js";
+import { createElement } from "../utils/createElement.js";
+import { createField } from "../utils/createField.js";
+import { defineWidget, type Context } from "../utils/defineWidget.js";
 
 interface NumberFieldWidget {
   type: "NumberField";
@@ -30,27 +30,20 @@ function createNumberField(
   text: string,
   options?: NumberFieldOptions,
 ): NumberFieldWidget {
+  const { id, field, label } = createField("label", text);
+
   const value = options?.initialValue ?? options?.value ?? 0;
 
-  const id = randomId();
-  const element = document.createElement("label");
-  element.className = "BlinkField";
-  element.setAttribute("for", id);
-
-  const label = document.createElement("span");
-  label.className = "BlinkLabel";
-  label.textContent = text;
-  element.appendChild(label);
-
-  const input = document.createElement("input");
-  input.id = id;
-  input.className = "BlinkNumberInput";
-  input.value = value.toString();
-  element.appendChild(input);
+  const input = createElement("input", {
+    id,
+    className: "BlinkNumberInput",
+    value: value.toString(),
+  });
+  field.appendChild(input);
 
   const node: NumberFieldWidget = {
     type: "NumberField",
-    element,
+    element: field,
     input,
     label,
     text,

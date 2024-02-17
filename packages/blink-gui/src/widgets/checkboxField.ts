@@ -1,6 +1,6 @@
-import type { Context } from "../defineWidget.js";
-import { defineWidget } from "../defineWidget.js";
-import { randomId } from "../utils/randomId.js";
+import { createElement } from "../utils/createElement.js";
+import { createField } from "../utils/createField.js";
+import { defineWidget, type Context } from "../utils/defineWidget.js";
 
 interface CheckboxFieldWidget {
   type: "CheckboxField";
@@ -30,41 +30,26 @@ function createCheckboxField(
   text: string,
   options?: CheckboxFieldOptions,
 ): CheckboxFieldWidget {
+  const { id, field, label } = createField("label", text);
+
   const value = options?.initialValue ?? options?.value ?? false;
 
-  const id = randomId();
-  const element = document.createElement("label");
-  element.className = "BlinkField";
-  element.setAttribute("for", id);
+  const wrapper = createElement("div", { className: "BlinkCheckbox" });
+  field.appendChild(wrapper);
 
-  const label = document.createElement("span");
-  label.className = "BlinkLabel";
-  label.textContent = text;
-  element.appendChild(label);
-
-  const wrapper = document.createElement("div");
-  wrapper.className = "BlinkCheckbox";
-  element.appendChild(wrapper);
-
-  const input = document.createElement("input");
-  input.id = id;
-  input.type = "checkbox";
-  input.checked = value;
+  const input = createElement("input", {
+    id,
+    type: "checkbox",
+    checked: value,
+  });
   wrapper.appendChild(input);
 
-  const xmlns = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(xmlns, "svg");
-  svg.setAttributeNS(null, "viewBox", "0 0 20 20");
-  svg.setAttributeNS(null, "width", "20px");
-  svg.setAttributeNS(null, "height", "20px");
-  const path = document.createElementNS(xmlns, "path");
-  path.setAttributeNS(null, "d", "M4 10l4 4 8-8");
-  svg.appendChild(path);
+  const svg = createCheckboxSvg();
   wrapper.appendChild(svg);
 
   const node: CheckboxFieldWidget = {
     type: "CheckboxField",
-    element,
+    element: field,
     input,
     label,
     text,
@@ -97,4 +82,16 @@ function diffCheckboxField(
   }
   node.updated = false;
   return node.value;
+}
+
+function createCheckboxSvg() {
+  const xmlns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(xmlns, "svg");
+  svg.setAttributeNS(null, "viewBox", "0 0 20 20");
+  svg.setAttributeNS(null, "width", "20px");
+  svg.setAttributeNS(null, "height", "20px");
+  const path = document.createElementNS(xmlns, "path");
+  path.setAttributeNS(null, "d", "M4 10l4 4 8-8");
+  svg.appendChild(path);
+  return svg;
 }
