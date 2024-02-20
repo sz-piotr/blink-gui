@@ -3,7 +3,7 @@ import type { Context, Widget } from "./utils/defineWidget.js";
 import { toTitleCase } from "./utils/toTitleCase.js";
 import { defineButton } from "./widgets/button.js";
 import { defineCheckboxField } from "./widgets/checkboxField.js";
-import { defineContainer } from "./widgets/container.js";
+import { defineVectorField } from "./widgets/vectorField.js";
 import { defineNumberField } from "./widgets/numberField.js";
 import { defineText } from "./widgets/text.js";
 import { defineTextField } from "./widgets/textField.js";
@@ -33,8 +33,6 @@ export class BlinkGui {
       injectStyles();
     }
   }
-
-  container = defineContainer(this.context);
 
   text = defineText(this.context);
   button = defineButton(this.context);
@@ -67,6 +65,19 @@ export class BlinkGui {
     if (newValue !== value) {
       object[key] = newValue;
     }
+  }
+
+  private vectorField = defineVectorField(this.context);
+  vectorControl<K1 extends string, K2 extends string>(
+    object: { [_ in K1]: { [_ in K2]: number } },
+    key: K1,
+    keys: K2[],
+  ): void {
+    this.vectorField((ui) => {
+      for (const k of keys) {
+        ui.numberControl(object[key], k);
+      }
+    });
   }
 
   control<K extends string>(

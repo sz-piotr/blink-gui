@@ -139,3 +139,26 @@
     top: 1px;
   }
 }
+
+.BlinkVectorField {
+  .BlinkField:first-child:not(:last-child) {
+    margin-bottom: 0;
+    .BlinkNumberInput {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  .BlinkField:not(:first-child):not(:last-child) {
+    .BlinkNumberInput {
+      border-radius: 0;
+    }
+  }
+
+  .BlinkField:last-child:not(:first-child) {
+    .BlinkNumberInput {
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+    }
+  }
+}
