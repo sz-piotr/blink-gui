@@ -14,7 +14,7 @@ interface ButtonWidget {
 }
 
 export interface ButtonOptions {
-  label: string;
+  label?: string;
 }
 
 export const button = widget("button", createButton, diffButton);

@@ -1,1 +1,10 @@
 export { BlinkGui } from "./BlinkGui.js";
+export type { ButtonOptions } from "./widgets/button.js";
+export type { CheckboxControlOptions } from "./widgets/checkboxControl.js";
+export type { CheckboxFieldOptions } from "./widgets/checkboxField.js";
+export type { ControlOptions } from "./widgets/control.js";
+export type { NumberControlOptions } from "./widgets/numberControl.js";
+export type { NumberFieldOptions } from "./widgets/numberField.js";
+export type { TextControlOptions } from "./widgets/textControl.js";
+export type { TextFieldOptions } from "./widgets/textField.js";
+export type { VectorControlOptions } from "./widgets/vectorControl.js";
