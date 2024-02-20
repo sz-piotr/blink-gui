@@ -12,5 +12,6 @@ export function diffLabel(
     }
     node.labelText = labelText;
     node.label.textContent = labelText;
+    node.label.title = labelText;
   }
 }

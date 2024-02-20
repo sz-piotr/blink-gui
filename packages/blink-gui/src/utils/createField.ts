@@ -12,6 +12,7 @@ export function createField(tagName: "label" | "div", text?: string) {
   const label = createElement("span", {
     className: "BlinkLabel",
     textContent: text,
+    title: text,
   });
   element.appendChild(label);
 
