@@ -1,5 +1,5 @@
 import { createElement } from "../utils/createElement.js";
-import { defineWidget, type Context } from "../utils/defineWidget.js";
+import { widget } from "../widget.js";
 
 interface TextWidget {
   type: "text";
@@ -7,9 +7,7 @@ interface TextWidget {
   text: string;
 }
 
-export function defineText(context: Context) {
-  return defineWidget("text", context, createText, diffText);
-}
+export const text = widget("text", createText, diffText);
 
 function createText(text: string): TextWidget {
   const element = createElement("div", {

@@ -1,10 +1,10 @@
 import { createElement } from "../utils/createElement.js";
 import { createField } from "../utils/createField.js";
-import { defineWidget, type Context } from "../utils/defineWidget.js";
 import { diffLabel } from "../utils/diffLabel.js";
+import { widget } from "../widget.js";
 
 interface CheckboxFieldWidget {
-  type: "CheckboxField";
+  type: "checkboxField";
   element: HTMLElement;
   label: HTMLSpanElement;
   labelText: string;
@@ -18,14 +18,11 @@ export interface CheckboxFieldOptions {
   initialValue?: boolean;
 }
 
-export function defineCheckboxField(context: Context) {
-  return defineWidget(
-    "CheckboxField",
-    context,
-    createCheckboxField,
-    diffCheckboxField,
-  );
-}
+export const checkboxField = widget(
+  "checkboxField",
+  createCheckboxField,
+  diffCheckboxField,
+);
 
 function createCheckboxField(
   label: string,
@@ -49,7 +46,7 @@ function createCheckboxField(
   wrapper.appendChild(svg);
 
   const node: CheckboxFieldWidget = {
-    type: "CheckboxField",
+    type: "checkboxField",
     element: field.element,
     input,
     label: field.label,

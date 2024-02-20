@@ -1,7 +1,7 @@
 import { createElement } from "../utils/createElement.js";
 import { createField } from "../utils/createField.js";
-import { defineWidget, type Context } from "../utils/defineWidget.js";
 import { diffLabel } from "../utils/diffLabel.js";
+import { widget } from "../widget.js";
 
 interface ButtonWidget {
   type: "button";
@@ -17,9 +17,7 @@ export interface ButtonOptions {
   label: string;
 }
 
-export function defineButton(context: Context) {
-  return defineWidget("button", context, createButton, diffButton);
-}
+export const button = widget("button", createButton, diffButton);
 
 function createButton(text: string, options?: ButtonOptions): ButtonWidget {
   const { element, label } = createField("div", options?.label ?? "");

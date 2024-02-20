@@ -1,10 +1,10 @@
 import { createElement } from "../utils/createElement.js";
 import { createField } from "../utils/createField.js";
-import { defineWidget, type Context } from "../utils/defineWidget.js";
 import { diffLabel } from "../utils/diffLabel.js";
+import { widget } from "../widget.js";
 
 interface NumberFieldWidget {
-  type: "NumberField";
+  type: "numberField";
   element: HTMLElement;
   label: HTMLSpanElement;
   labelText: string;
@@ -18,14 +18,11 @@ export interface NumberFieldOptions {
   initialValue?: number;
 }
 
-export function defineNumberField(context: Context) {
-  return defineWidget(
-    "NumberField",
-    context,
-    createNumberField,
-    diffNumberField,
-  );
-}
+export const numberField = widget(
+  "numberField",
+  createNumberField,
+  diffNumberField,
+);
 
 function createNumberField(
   label: string,
@@ -43,7 +40,7 @@ function createNumberField(
   field.element.appendChild(input);
 
   const node: NumberFieldWidget = {
-    type: "NumberField",
+    type: "numberField",
     element: field.element,
     input,
     label: field.label,

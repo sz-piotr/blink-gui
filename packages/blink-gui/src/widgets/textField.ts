@@ -1,10 +1,10 @@
 import { createElement } from "../utils/createElement.js";
 import { createField } from "../utils/createField.js";
-import { defineWidget, type Context } from "../utils/defineWidget.js";
 import { diffLabel } from "../utils/diffLabel.js";
+import { widget } from "../widget.js";
 
 interface TextFieldWidget {
-  type: "TextField";
+  type: "textField";
   element: HTMLElement;
   label: HTMLSpanElement;
   labelText: string;
@@ -18,9 +18,7 @@ export interface TextFieldOptions {
   initialValue?: string;
 }
 
-export function defineTextField(context: Context) {
-  return defineWidget("TextField", context, createTextField, diffTextField);
-}
+export const textField = widget("textField", createTextField, diffTextField);
 
 function createTextField(
   label: string,
@@ -38,7 +36,7 @@ function createTextField(
   field.element.appendChild(input);
 
   const node: TextFieldWidget = {
-    type: "TextField",
+    type: "textField",
     element: field.element,
     label: field.label,
     labelText: label,

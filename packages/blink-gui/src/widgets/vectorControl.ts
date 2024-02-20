@@ -1,21 +1,14 @@
 import { BlinkGui } from "../BlinkGui.js";
 import { createElement } from "../utils/createElement.js";
-import { defineWidget, type Context } from "../utils/defineWidget.js";
+import { widget } from "../widget.js";
 
 interface VectorFieldWidget {
-  type: "VectorField";
+  type: "vectorField";
   element: HTMLElement;
   ui: BlinkGui;
 }
 
-export function defineVectorField(context: Context) {
-  return defineWidget(
-    "VectorField",
-    context,
-    createVectorField,
-    diffVectorField,
-  );
-}
+const vectorField = widget("vectorField", createVectorField, diffVectorField);
 
 function createVectorField(
   contents: (ui: BlinkGui) => void,
@@ -28,7 +21,7 @@ function createVectorField(
   });
   contents(ui);
   ui.end();
-  return { type: "VectorField", element, ui };
+  return { type: "vectorField", element, ui };
 }
 
 function diffVectorField(
@@ -37,4 +30,17 @@ function diffVectorField(
 ): void {
   contents(node.ui);
   node.ui.end();
+}
+
+export function vectorControl<K1 extends string, K2 extends string>(
+  this: BlinkGui,
+  object: { [_ in K1]: { [_ in K2]: number } },
+  key: K1,
+  keys: K2[],
+): void {
+  vectorField.call(this, (ui) => {
+    for (const k of keys) {
+      ui.numberControl(object[key], k);
+    }
+  });
 }

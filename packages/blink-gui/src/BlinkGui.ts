@@ -1,12 +1,16 @@
 import { injectStyles } from "./injectStyles.js";
-import type { Context, Widget } from "./utils/defineWidget.js";
-import { toTitleCase } from "./utils/toTitleCase.js";
-import { defineButton } from "./widgets/button.js";
-import { defineCheckboxField } from "./widgets/checkboxField.js";
-import { defineVectorField } from "./widgets/vectorField.js";
-import { defineNumberField } from "./widgets/numberField.js";
-import { defineText } from "./widgets/text.js";
-import { defineTextField } from "./widgets/textField.js";
+import type { Widget } from "./widget.js";
+import { button } from "./widgets/button.js";
+import { checkboxControl } from "./widgets/checkboxControl.js";
+import { checkboxField } from "./widgets/checkboxField.js";
+import { control } from "./widgets/control.js";
+import { controlSet } from "./widgets/controlSet.js";
+import { numberControl } from "./widgets/numberControl.js";
+import { numberField } from "./widgets/numberField.js";
+import { text } from "./widgets/text.js";
+import { textControl } from "./widgets/textControl.js";
+import { textField } from "./widgets/textField.js";
+import { vectorControl } from "./widgets/vectorControl.js";
 
 export interface BlinkGuiOptions {
   container?: HTMLElement;
@@ -16,15 +20,10 @@ export interface BlinkGuiOptions {
 
 export class BlinkGui {
   private element: HTMLElement;
-  private nodes: Widget[] = [];
+  private widgets: Widget[] = [];
   private index = 0;
   private timeout?: ReturnType<typeof setTimeout>;
   private autoEnd: boolean;
-
-  private context: Context = {
-    getNextWidget: this.getNode.bind(this),
-    replaceWidget: this.replaceNode.bind(this),
-  };
 
   constructor(options?: BlinkGuiOptions) {
     this.element = options?.container ?? createContainerElement();
@@ -34,92 +33,33 @@ export class BlinkGui {
     }
   }
 
-  text = defineText(this.context);
-  button = defineButton(this.context);
+  text = text;
+  button = button;
+  checkboxField = checkboxField;
+  checkboxControl = checkboxControl;
+  textField = textField;
+  textControl = textControl;
+  numberField = numberField;
+  numberControl = numberControl;
+  vectorControl = vectorControl;
+  control = control;
+  controlSet = controlSet;
 
-  checkboxField = defineCheckboxField(this.context);
-  checkboxControl<K extends string>(
-    object: { [_ in K]: boolean },
-    key: K,
-  ): void {
-    const value = object[key];
-    const newValue = this.checkboxField(toTitleCase(key), { value });
-    if (newValue !== value) {
-      object[key] = newValue;
-    }
-  }
-
-  textField = defineTextField(this.context);
-  textControl<K extends string>(object: { [_ in K]: string }, key: K): void {
-    const value = object[key];
-    const newValue = this.textField(toTitleCase(key), { value });
-    if (newValue !== value) {
-      object[key] = newValue;
-    }
-  }
-
-  numberField = defineNumberField(this.context);
-  numberControl<K extends string>(object: { [_ in K]: number }, key: K): void {
-    const value = object[key];
-    const newValue = this.numberField(toTitleCase(key), { value });
-    if (newValue !== value) {
-      object[key] = newValue;
-    }
-  }
-
-  private vectorField = defineVectorField(this.context);
-  vectorControl<K1 extends string, K2 extends string>(
-    object: { [_ in K1]: { [_ in K2]: number } },
-    key: K1,
-    keys: K2[],
-  ): void {
-    this.vectorField((ui) => {
-      for (const k of keys) {
-        ui.numberControl(object[key], k);
-      }
-    });
-  }
-
-  control<K extends string>(
-    object: { [_ in K]: boolean | string | number },
-    key: K,
-  ): void {
-    const value = object[key];
-    if (typeof value === "boolean") {
-      return this.checkboxControl(object as { [_ in K]: boolean }, key);
-    } else if (typeof value === "string") {
-      return this.textControl(object as { [_ in K]: string }, key);
-    } else if (typeof value === "number") {
-      return this.numberControl(object as { [_ in K]: number }, key);
-    } else {
-      throw new Error("Invalid value type");
-    }
-  }
-
-  controlSet(object: {}): void {
-    for (const key in object) {
-      const type = typeof (object as Record<string, unknown>)[key];
-      if (type === "boolean" || type === "string" || type === "number") {
-        this.control(object, key as string);
-      }
-    }
-  }
-
-  private getNode() {
+  protected getNextWidget() {
     if (this.autoEnd && this.timeout === undefined) {
       this.timeout = setTimeout(() => this.end(), 0);
     }
-    return this.nodes[this.index++];
+    return this.widgets[this.index++];
   }
 
-  private replaceNode(node: Widget) {
-    const oldNode = this.nodes[this.index];
+  protected replaceWidget(node: Widget) {
+    const oldNode = this.widgets[this.index];
     if (oldNode) {
       this.element.replaceChild(node.element, oldNode.element);
-      this.nodes[this.index] = node;
+      this.widgets[this.index] = node;
     } else {
       this.element.appendChild(node.element);
-      this.nodes.push(node);
+      this.widgets.push(node);
     }
   }
 
@@ -129,7 +69,7 @@ export class BlinkGui {
       this.timeout = undefined;
     }
 
-    const removed = this.nodes.splice(this.index);
+    const removed = this.widgets.splice(this.index);
     for (const node of removed) {
       this.element.removeChild(node.element);
     }
