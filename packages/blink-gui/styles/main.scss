@@ -2,6 +2,7 @@
 
 :root {
   --blink-width: 230px;
+  --blink-gray-4: #777777;
   --blink-gray-3: #666666;
   --blink-gray-2: #444444;
   --blink-gray-1: #333333;
@@ -26,7 +27,7 @@
   display: flex;
   padding: 0 8px;
   margin-bottom: 4px;
-  line-height: 22px;
+  line-height: 20px;
 }
 
 .BlinkText {
@@ -38,9 +39,9 @@
 
 .BlinkLabel {
   display: block;
-  width: 85px;
-  max-width: 85px;
-  min-width: 85px;
+  width: 100px;
+  max-width: 100px;
+  min-width: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -55,16 +56,10 @@
   width: 100%;
   color: var(--blink-text);
   caret-color: var(--blink-blue-1);
-  padding: 0 6px;
   height: 20px;
   border-radius: 4px;
   border: 1px solid var(--blink-gray-2);
   box-shadow: 0px 1px 0px var(--blink-gray-1);
-
-  &:focus {
-    outline: none;
-    border-color: var(--blink-blue-1);
-  }
 
   &::selection {
     background-color: var(--blink-blue-2);
@@ -74,11 +69,78 @@
 
 .BlinkTextInput {
   background-color: var(--blink-gray-0);
+  padding: 0 6px;
+
+  &:focus {
+    outline: none;
+    border-color: var(--blink-blue-1);
+  }
 }
 
 .BlinkNumberInput {
   background-color: var(--blink-gray-3);
-  text-align: center;
+  position: relative;
+
+  input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0 6px;
+    background-color: inherit;
+    color: inherit;
+    border: none;
+    border-radius: inherit;
+    text-align: center;
+    cursor: col-resize;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      background-color: var(--blink-gray-4);
+    }
+  }
+
+  &:focus-within {
+    border-color: var(--blink-blue-1);
+  }
+
+  button {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    text-align: center;
+    width: 12px;
+    height: 100%;
+    line-height: 18px;
+    background-color: var(--blink-gray-3);
+    color: var(--blink-text);
+    cursor: pointer;
+    border-top-left-radius: inherit;
+    border-bottom-left-radius: inherit;
+    user-select: none;
+
+    &:hover {
+      background-color: var(--blink-gray-4);
+    }
+
+    &:last-child {
+      left: unset;
+      right: 0;
+      border-radius: 0;
+      border-top-right-radius: inherit;
+      border-bottom-right-radius: inherit;
+    }
+  }
+
+  &:hover button {
+    display: block;
+  }
 }
 
 .BlinkCheckbox {
@@ -87,6 +149,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  user-select: none;
+
   input {
     position: absolute;
     width: 100%;
@@ -95,6 +159,7 @@
     margin: 0;
     cursor: pointer;
   }
+
   svg {
     background-color: var(--blink-blue-2);
     border-radius: 4px;
@@ -106,12 +171,14 @@
       stroke: var(--blink-text);
     }
   }
+
   input:not(:checked) + svg {
     background-color: var(--blink-gray-3);
     path {
       display: none;
     }
   }
+
   input:focus-visible + svg {
     border-color: var(--blink-blue-1);
   }
@@ -128,6 +195,7 @@
   color: var(--blink-text);
   cursor: pointer;
   box-shadow: 0px 1px 0px var(--blink-gray-1);
+  user-select: none;
 
   &:focus-visible {
     outline: none;
@@ -141,7 +209,7 @@
 }
 
 .BlinkVectorField {
-  .BlinkField:first-child:not(:last-child) {
+  .BlinkField:not(:last-child) {
     margin-bottom: 0;
     .BlinkNumberInput {
       border-bottom-right-radius: 0;
@@ -149,13 +217,7 @@
     }
   }
 
-  .BlinkField:not(:first-child):not(:last-child) {
-    .BlinkNumberInput {
-      border-radius: 0;
-    }
-  }
-
-  .BlinkField:last-child:not(:first-child) {
+  .BlinkField:not(:first-child) {
     .BlinkNumberInput {
       border-top-right-radius: 0;
       border-top-left-radius: 0;

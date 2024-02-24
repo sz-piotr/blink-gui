@@ -32,12 +32,26 @@ function createNumberField(
 
   const value = options?.initialValue ?? options?.value ?? 0;
 
+  const inputWrapper = createElement("div", { className: "BlinkNumberInput" });
+  field.element.appendChild(inputWrapper);
+
   const input = createElement("input", {
     id: field.id,
-    className: "BlinkNumberInput",
     value: value.toString(),
   });
-  field.element.appendChild(input);
+  inputWrapper.appendChild(input);
+
+  const leftButton = createElement("button", {
+    textContent: "⏴",
+    tabIndex: -1,
+  });
+  inputWrapper.appendChild(leftButton);
+
+  const rightButton = createElement("button", {
+    textContent: "⏵",
+    tabIndex: -1,
+  });
+  inputWrapper.appendChild(rightButton);
 
   const node: NumberFieldWidget = {
     type: "numberField",
